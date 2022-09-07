@@ -14,7 +14,9 @@ $ stat / | grep "Birth" | sed 's/Birth: //g' | cut -b 2-11
 - zsh and oh-my-zsh is installed
 <img src="packs.png"/>
 but I prefer to use bash, with my custom .bashrc. 
+
 - Using: gcc 12.2.0
+
 - Editor: VSCode - for large files, nano - for small root protected files
 
 3) 
@@ -34,4 +36,4 @@ git status
 git push
 ```
 
-*) Had some troubles at start with pushing: ```Support for password authentication was removed on August 13, 2021.``` After that I had to create token based authentification
+Note: Had some troubles at start with pushing: ```Support for password authentication was removed on August 13, 2021.``` After that I had to create token based authentification
