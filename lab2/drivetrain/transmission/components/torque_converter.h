@@ -9,6 +9,10 @@ public:
             : max_torque(0)
             , friction_ratio(0.86f) {}
 
+    Torque_Converter(const Torque_Converter& copy)
+            : max_torque(copy.max_torque)
+            , friction_ratio(copy.friction_ratio) {}
+
     Torque_Converter(uint32_t max_torque, float friction_ratio = 0.86f)
             : max_torque(max_torque)
             , friction_ratio(friction_ratio) {}

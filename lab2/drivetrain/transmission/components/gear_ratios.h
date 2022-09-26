@@ -17,7 +17,7 @@ public:
         std::sort(this->ratios.begin(), this->ratios.end());
     }
 
-    void set_torque(uint8_t count) {
+    void set_g_count(uint8_t count) {
         gears_count = count;
     }
 
@@ -26,7 +26,7 @@ public:
         std::sort(this->ratios.begin(), this->ratios.end());
     }
 
-    uint8_t get_torque() {
+    uint8_t get_g_count() {
         return gears_count;
     }
 
