@@ -2,23 +2,23 @@
 
 class Clutch {
     uint32_t max_torque;
-    float friction;
+    float friction_ratio;
 
 public:
     Clutch()
             : max_torque(0)
-            , friction(0.f) {}
+            , friction_ratio(0.98f) {}
 
-    Clutch(uint32_t max_torque, float friction)
+    Clutch(uint32_t max_torque, float friction_ratio = 0.98f)
             : max_torque(max_torque)
-            , friction(friction) {}
+            , friction_ratio(friction_ratio) {}
 
     void set_torque(uint32_t data) {
         max_torque = data;
     }
 
     void set_friction(float ratio) {
-        friction = ratio;
+        friction_ratio = ratio;
     }
 
     uint32_t get_torque() {
@@ -26,6 +26,6 @@ public:
     }
 
     float get_friction() {
-        return friction;
+        return friction_ratio;
     }
 };
