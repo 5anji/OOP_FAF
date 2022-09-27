@@ -26,11 +26,7 @@ public:
         ratios.set_ratios(const_cast<Gear_Ratios&>(v).get_ratios());
     }
 
-    Torque_Converter& get_coupler() {
-        return coupler_type;
-    }
+    Torque_Converter& get_coupler() { return coupler_type; }
 
-    Gear_Ratios& get_ratios() {
-        return ratios;
-    }
+    Gear_Ratios& get_ratios() { return ratios; }
 };

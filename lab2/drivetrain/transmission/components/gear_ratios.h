@@ -15,13 +15,9 @@ public:
 
     Gear_Ratios(uint8_t gears_count, const std::vector<float>& ratios)
             : gears_count(gears_count)
-            , ratios(ratios) {
-        std::sort(this->ratios.begin(), this->ratios.end());
-    }
+            , ratios(ratios) { std::sort(this->ratios.begin(), this->ratios.end()); }
 
-    void set_g_count(uint8_t count) {
-        gears_count = count;
-    }
+    void set_g_count(uint8_t count) { gears_count = count; }
 
     void set_ratios(const std::vector<float>& v) {
         ratios = v;

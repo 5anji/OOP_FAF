@@ -1,7 +1,7 @@
 #pragma once
 
-#include "components/gear_ratios.h"
 #include "components/clutch.h"
+#include "components/gear_ratios.h"
 
 class Manual {
     Clutch coupler_type;
@@ -26,11 +26,7 @@ public:
         ratios.set_ratios(const_cast<Gear_Ratios&>(v).get_ratios());
     }
 
-    Clutch& get_coupler() {
-        return coupler_type;
-    }
+    Clutch& get_coupler() { return coupler_type; }
 
-    Gear_Ratios& get_ratios() {
-        return ratios;
-    }
+    Gear_Ratios& get_ratios() { return ratios; }
 };

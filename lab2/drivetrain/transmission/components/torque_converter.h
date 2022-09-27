@@ -19,19 +19,11 @@ public:
             : max_torque(max_torque)
             , friction_ratio(friction_ratio) {}
 
-    void set_torque(uint32_t data) {
-        max_torque = data;
-    }
+    void set_torque(uint32_t data) { max_torque = data; }
 
-    void set_friction(float ratio) {
-        friction_ratio = ratio;
-    }
+    void set_friction(float ratio) { friction_ratio = ratio; }
 
-    uint32_t get_torque() {
-        return max_torque;
-    }
+    uint32_t get_torque() { return max_torque; }
 
-    float get_friction() {
-        return friction_ratio;
-    }
+    float get_friction() { return friction_ratio; }
 };
