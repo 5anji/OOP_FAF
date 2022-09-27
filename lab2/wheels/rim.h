@@ -15,6 +15,11 @@ public:
             , width(copy.width)
             , ET(copy.ET) {}
 
+    Rim(float diameter, float width, uint8_t ET)
+            : diameter(diameter)
+            , width(width)
+            , ET(ET) {}
+
     void set_rim_data(float d, float w, uint8_t et) {
         diameter = d;
         width = w;
