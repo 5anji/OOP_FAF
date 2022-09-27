@@ -1,3 +1,5 @@
+#pragma once
+
 class Gear_Ratios;
 
 template <typename T>

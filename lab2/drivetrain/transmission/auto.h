@@ -1,3 +1,5 @@
+#pragma once
+
 #include "components/gear_ratios.h"
 #include "components/torque_converter.h"
 
