@@ -18,11 +18,11 @@ int main() {
     std::cout << axle.get_spring_t().get_stifness() << std::endl;
 
     Clutch coupler(500);
-    Manual gearbox;
-    gearbox.set_coupler(coupler);
-    gearbox.set_ratios(Gear_Ratios(8, {-3.3, 0, 4.12, 3.7, 2.43, 1.72, 1.00, 0.89}));
+    Gearbox<Clutch>* gearbox = new Manual();
+    gearbox->set_coupler(coupler);
+    gearbox->set_ratios(Gear_Ratios(8, {-3.3, 0, 4.12, 3.7, 2.43, 1.72, 1.00, 0.89}));
 
-    for (auto&& i : gearbox.get_ratios().get_ratios()) {
+    for (auto&& i : gearbox->get_ratios().get_ratios()) {
         std::cout << i << ' ';
     }
 

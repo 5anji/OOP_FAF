@@ -2,8 +2,10 @@
 
 #include "components/gear_ratios.h"
 #include "components/torque_converter.h"
+#include "gearbox.h"
 
-class Auto {
+template <typename T = Torque_Converter>
+class Auto : public Gearbox<T> {
     Torque_Converter coupler_type;
     Gear_Ratios ratios;
 
@@ -16,7 +18,7 @@ public:
             : coupler_type(coupler_type)
             , ratios(ratios) {}
 
-    void set_coupler(const Torque_Converter& data) {
+    void set_coupler(const T& data) {
         coupler_type.set_torque(const_cast<Torque_Converter&>(data).get_torque());
         coupler_type.set_friction(const_cast<Torque_Converter&>(data).get_friction());
     }
@@ -26,7 +28,7 @@ public:
         ratios.set_ratios(const_cast<Gear_Ratios&>(v).get_ratios());
     }
 
-    Torque_Converter& get_coupler() { return coupler_type; }
+    T& get_coupler() { return coupler_type; }
 
     Gear_Ratios& get_ratios() { return ratios; }
 };
