@@ -1,9 +1,11 @@
 #pragma once
+#include "../../damage.h"
+
 #include <cstdint>
 #include <iostream>
 #include <map>
 
-class ShortBlock {
+class ShortBlock : public Damage {
     std::map<int, float> torque_at_rpm;
     uint32_t max_rpm;
     uint32_t idle_rpm;
@@ -33,6 +35,6 @@ public:
             , idle_rpm(idle_rpm) {}
 
     float get_torque_Nm(uint16_t rpm) {
-        return torque_at_rpm[rpm];
+        return integrity * torque_at_rpm[rpm];
     }
 };

@@ -1,4 +1,6 @@
 #pragma once
+#include "../../damage.h"
+
 #include <cstdint>
 
 class EngineHead {

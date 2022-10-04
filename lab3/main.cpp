@@ -5,6 +5,7 @@
 #include "wheels/tire.h"
 
 #include <iostream>
+#include <random>
 
 int main() {
     Rim rim(17, 8.5, 22);
@@ -26,7 +27,6 @@ int main() {
     for (auto&& i : gearbox->get_ratios().get_ratios())
         std::cout << i << ' ';
 
-
     Forced_Induction* f_ind = new TurboCharger([] {
         std::map<int, float> turbo_map;
         turbo_map[1000] = 7;
@@ -46,11 +46,16 @@ int main() {
         tq_map[4000] = 162;
         tq_map[5000] = 180;
         return tq_map;
-    }(), 5000, 800);
+    }(),
+                     5000,
+                     800);
+    std::random_device generator;
+    std::uniform_real_distribution<float> distributon(0.9f, 1.f);
+    block.set_damage(distributon(generator));
     Engine<TurboCharger> engine(f_ind, head, block);
 
     std::cout << std::endl;
-    std::cout << engine.get_torque_at_rpm(1000) << std::endl;
+    std::cout << engine.get_torque_at_rpm(4000) << std::endl;
 
     delete axle;
     delete gearbox;

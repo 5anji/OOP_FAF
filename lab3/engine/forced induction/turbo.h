@@ -1,11 +1,13 @@
 #pragma once
+#include "../../damage.h"
 #include "forced_induction.h"
 
 #include <cstdint>
 #include <iostream>
 #include <map>
 
-class TurboCharger : public Forced_Induction {
+class TurboCharger : public Forced_Induction
+        , public Damage {
     std::map<int, float> psi_at_rpm;
 
 public:
@@ -28,6 +30,6 @@ public:
             : psi_at_rpm(psi) {}
 
     float get_pressure_PSI(uint16_t rpm) override {
-        return psi_at_rpm[rpm];
+        return integrity * psi_at_rpm[rpm];
     }
 };
