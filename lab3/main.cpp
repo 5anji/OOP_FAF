@@ -13,9 +13,9 @@ int main() {
     std::cout << tire.get_diameter() << std::endl;
 
     LeafSpring leaf(60000, 15);
-    Live_Axle axle(leaf, true);
+    Suspension<LeafSpring>* axle = new Live_Axle(leaf, true);
 
-    std::cout << axle.get_spring_t().get_stifness() << std::endl;
+    std::cout << axle->get_spring_t().get_stifness() << std::endl;
 
     Clutch coupler(500);
     Gearbox<Clutch>* gearbox = new Manual();
@@ -25,7 +25,8 @@ int main() {
     for (auto&& i : gearbox->get_ratios().get_ratios()) {
         std::cout << i << ' ';
     }
-
+    delete axle;
+    delete gearbox;
     std::cout << std::endl;
     return 0;
 }

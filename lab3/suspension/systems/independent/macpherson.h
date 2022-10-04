@@ -1,5 +1,6 @@
 #pragma once
 #include "../../springs/strut.h"
+#include "../suspension.h"
 
 #include <cstdint>
 
