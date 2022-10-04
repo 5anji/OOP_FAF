@@ -7,7 +7,7 @@
 
 template <typename T>
 class Engine {
-    T forced_induction_type;
+    Forced_Induction* forced_induction_type;
     EngineHead head;
     ShortBlock block;
 
@@ -19,10 +19,17 @@ public:
             , head(copy.head)
             , block(copy.block) {}
 
-    Engine(T& forced_induction_type, EngineHead& head, ShortBlock& block)
-            : forced_induction_type(forced_induction_type) {}
+    Engine(Forced_Induction* forced_induction_type, EngineHead& head, ShortBlock& block)
+            : forced_induction_type(forced_induction_type)
+            , head(head)
+            , block(block) {}
 
-    float get_torque_at_rpm() {
-        std::cout << "Invalid data type. Select supercharger or turbocharger" << std::endl;
+    float get_torque_at_rpm(uint32_t current_rpm) {
+        return block.get_torque_Nm(current_rpm) * head.get_added_torque_ratio()
+               + block.get_torque_Nm(current_rpm) * (forced_induction_type->get_pressure_PSI(current_rpm) / 14.7 + 10.2f) / 10.2f;
+    }
+
+    ~Engine() {
+        delete forced_induction_type;
     }
 };

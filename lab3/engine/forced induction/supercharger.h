@@ -1,7 +1,10 @@
 #pragma once
+
+#include "forced_induction.h"
+
 #include <cstdint>
 
-class SuperCharger {
+class SuperCharger : public Forced_Induction {
     float ratio;
 
 public:
@@ -11,7 +14,7 @@ public:
     SuperCharger(float ratio)
             : ratio(ratio) {}
 
-    float get_pressure_PSI(uint16_t rpm) {
+    float get_pressure_PSI(uint16_t rpm) override {
         return 3 + 0.6 * ratio * (static_cast<float>(rpm) / 1000.f);
     }
 

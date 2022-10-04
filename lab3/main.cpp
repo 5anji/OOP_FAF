@@ -1,4 +1,5 @@
 #include "drivetrain/transmission/manual.h"
+#include "engine/engine.h"
 #include "suspension/systems/dependent/live_axle.h"
 #include "wheels/rim.h"
 #include "wheels/tire.h"
@@ -22,11 +23,36 @@ int main() {
     gearbox->set_coupler(coupler);
     gearbox->set_ratios(Gear_Ratios(8, {-3.3, 0, 4.12, 3.7, 2.43, 1.72, 1.00, 0.89}));
 
-    for (auto&& i : gearbox->get_ratios().get_ratios()) {
+    for (auto&& i : gearbox->get_ratios().get_ratios())
         std::cout << i << ' ';
-    }
+
+
+    Forced_Induction* f_ind = new TurboCharger([] {
+        std::map<int, float> turbo_map;
+        turbo_map[1000] = 7;
+        turbo_map[2000] = 13;
+        turbo_map[3000] = 16;
+        turbo_map[4000] = 18;
+        turbo_map[5000] = 21;
+        return turbo_map;
+    }());
+
+    EngineHead head(11.f, 700);
+    ShortBlock block([] {
+        std::map<int, float> tq_map;
+        tq_map[1000] = 80;
+        tq_map[2000] = 120;
+        tq_map[3000] = 145;
+        tq_map[4000] = 162;
+        tq_map[5000] = 180;
+        return tq_map;
+    }(), 5000, 800);
+    Engine<TurboCharger> engine(f_ind, head, block);
+
+    std::cout << std::endl;
+    std::cout << engine.get_torque_at_rpm(1000) << std::endl;
+
     delete axle;
     delete gearbox;
-    std::cout << std::endl;
     return 0;
 }
