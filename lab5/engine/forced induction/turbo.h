@@ -2,6 +2,7 @@
 #include "../../damage.h"
 #include "forced_induction.h"
 
+#include <cmath>
 #include <cstdint>
 #include <iostream>
 #include <map>
@@ -30,6 +31,13 @@ public:
             : psi_at_rpm(psi) {}
 
     float get_pressure_PSI(uint16_t rpm) override {
-        return integrity * psi_at_rpm[rpm];
+        if (psi_at_rpm.find(rpm) != psi_at_rpm.end()) return psi_at_rpm.at(rpm);
+        if (rpm < psi_at_rpm.begin()->first) return psi_at_rpm.begin()->second;
+        if (rpm > psi_at_rpm.rbegin()->first) return psi_at_rpm.rbegin()->second;
+
+        auto lower = psi_at_rpm.lower_bound(rpm) == psi_at_rpm.begin() ? psi_at_rpm.begin() : --(psi_at_rpm.lower_bound(rpm));
+        auto upper = psi_at_rpm.upper_bound(rpm);
+
+        return integrity * lower->second + (upper->second - lower->second) * float(rpm - lower->first) / fabs(upper->first - lower->first);
     }
 };

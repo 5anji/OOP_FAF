@@ -10,6 +10,37 @@
 #include <random>
 #include <unistd.h>
 
+void benchmark(Engine<>& engine, ) {
+    while (true) {
+        float temp(delta(generator));
+        usleep(25E+4);
+
+        if (RPM > 5000) {
+            return;
+        }
+        float e_torque = temp * engine.get_torque_at_rpm(RPM);
+        float w_torque = e_torque * gearbox->get_coupler().get_friction() * gearbox->get_ratios().get_ratios()[7] * diff.get_gear_ratio();
+        float w_speed = temp * RPM * gearbox->get_coupler().get_friction()
+                        * (1 / gearbox->get_ratios().get_ratios()[7])
+                        * (1 / diff.get_gear_ratio())
+                        * (3.f / 25.f * M_PI * static_cast<float>(static_cast<float>(tire.get_width()) * static_cast<float>(tire.get_aspect_ratio()) / 100.f + static_cast<float>(rim.get_diameter()) * 25.4f) / 1000.f);
+        std::cout << "Current RPM: " << RPM << std::endl
+                  << "Engine Torque: " << std::setprecision(2) << std::fixed << e_torque << "Nm" << std::endl
+                  << "Wheel Torque: " << w_torque << std::endl
+                  << "Wheel Speed: " << w_speed << "km/h" << std::endl
+                  << std::endl
+                  << std::flush;
+        RPM += 500;
+    }
+}
+
+template <>
+class Car {
+
+public:
+
+};
+
 int main() {
     Rim rim(17, 8.5, 22);
     Tire tire;
@@ -66,28 +97,8 @@ int main() {
 
     Differential diff(3.45, 0.40);
 
-    while (true) {
-        float temp(delta(generator));
-        usleep(25E+4);
-
-        if (RPM > 5000) {
-            goto cancel;
-        }
-        float e_torque = temp * engine.get_torque_at_rpm(RPM);
-        float w_torque = e_torque * gearbox->get_coupler().get_friction() * gearbox->get_ratios().get_ratios()[7] * diff.get_gear_ratio();
-        float w_speed = temp * RPM * gearbox->get_coupler().get_friction()
-                        * (1 / gearbox->get_ratios().get_ratios()[7])
-                        * (1 / diff.get_gear_ratio())
-                        * (3.f / 25.f * M_PI * static_cast<float>(static_cast<float>(tire.get_width()) * static_cast<float>(tire.get_aspect_ratio()) / 100.f + static_cast<float>(rim.get_diameter()) * 25.4f) / 1000.f);
-        std::cout << "Current RPM: " << RPM << std::endl
-                  << "Engine Torque: " << std::setprecision(2) << std::fixed << e_torque << "Nm" << std::endl
-                  << "Wheel Torque: " << w_torque << std::endl
-                  << "Wheel Speed: " << w_speed << "km/h" << std::endl
-                  << std::endl
-                  << std::flush;
-        RPM += 1000;
-    }
-cancel:
+    std::cout << "Pressure: " << f_ind->get_pressure_PSI(1500) << std::endl;
+    std::cout << "Block: " << engine.get_torque_at_rpm(1500) << std::endl;
     delete axle;
     delete gearbox;
     return 0;
