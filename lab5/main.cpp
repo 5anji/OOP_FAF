@@ -10,37 +10,6 @@
 #include <random>
 #include <unistd.h>
 
-void benchmark(Engine<>& engine, ) {
-    while (true) {
-        float temp(delta(generator));
-        usleep(25E+4);
-
-        if (RPM > 5000) {
-            return;
-        }
-        float e_torque = temp * engine.get_torque_at_rpm(RPM);
-        float w_torque = e_torque * gearbox->get_coupler().get_friction() * gearbox->get_ratios().get_ratios()[7] * diff.get_gear_ratio();
-        float w_speed = temp * RPM * gearbox->get_coupler().get_friction()
-                        * (1 / gearbox->get_ratios().get_ratios()[7])
-                        * (1 / diff.get_gear_ratio())
-                        * (3.f / 25.f * M_PI * static_cast<float>(static_cast<float>(tire.get_width()) * static_cast<float>(tire.get_aspect_ratio()) / 100.f + static_cast<float>(rim.get_diameter()) * 25.4f) / 1000.f);
-        std::cout << "Current RPM: " << RPM << std::endl
-                  << "Engine Torque: " << std::setprecision(2) << std::fixed << e_torque << "Nm" << std::endl
-                  << "Wheel Torque: " << w_torque << std::endl
-                  << "Wheel Speed: " << w_speed << "km/h" << std::endl
-                  << std::endl
-                  << std::flush;
-        RPM += 500;
-    }
-}
-
-template <>
-class Car {
-
-public:
-
-};
-
 int main() {
     Rim rim(17, 8.5, 22);
     Tire tire;
@@ -68,6 +37,8 @@ int main() {
         turbo_map[3000] = 16;
         turbo_map[4000] = 18;
         turbo_map[5000] = 21;
+        turbo_map[6000] = 20;
+        turbo_map[7000] = 17;
         return turbo_map;
     }());
 
@@ -79,26 +50,90 @@ int main() {
         tq_map[3000] = 145;
         tq_map[4000] = 162;
         tq_map[5000] = 180;
+        tq_map[6000] = 192;
+        tq_map[7000] = 184;
         return tq_map;
     }(),
                      5000,
                      800);
     std::random_device generator;
-    std::uniform_real_distribution<float> distributon(0.5f, 1.f);
+    std::uniform_real_distribution<float> distributon(0.8f, 1.f);
     dynamic_cast<TurboCharger*>(f_ind)->set_damage(distributon(generator));
-    Engine<TurboCharger> engine(f_ind, head, block);
 
     std::cout << std::endl
               << "Using 6-th gear, for speed calculation:" << std::endl
               << std::endl;
-    size_t RPM(1000);
-
-    std::uniform_real_distribution<float> delta(0.95f, 1.f);
+    size_t RPM(800);
+    size_t gear = 2;
+    std::uniform_real_distribution<float> delta(0.92f, 1.f);
 
     Differential diff(3.45, 0.40);
+    system("clear");
+    Engine<TurboCharger>* engine = new Engine<TurboCharger>(f_ind, head, block);
 
-    std::cout << "Pressure: " << f_ind->get_pressure_PSI(1500) << std::endl;
-    std::cout << "Block: " << engine.get_torque_at_rpm(1500) << std::endl;
+    bool oil_checker(false);
+    
+    // set scale for simulation:
+    int simulation_speed_scale = 10;
+
+    do {
+        float temp(delta(generator));
+        if (RPM > 7000) {
+            gear++;
+            RPM = 800;
+            std::cout << "Changing gear..." << std::flush;
+            usleep(75E+4 / simulation_speed_scale);
+
+            if (gear > 7) {
+                gear = 2;
+                dynamic_cast<TurboCharger*>(f_ind)->set_damage(dynamic_cast<TurboCharger*>(f_ind)->get_damage() * temp);
+                block.set_damage(block.get_damage() * temp);
+                
+                if (oil_checker) {
+                    dynamic_cast<TurboCharger*>(f_ind)->set_damage(dynamic_cast<TurboCharger*>(f_ind)->get_damage() * temp);
+                    dynamic_cast<TurboCharger*>(f_ind)->set_damage(dynamic_cast<TurboCharger*>(f_ind)->get_damage() * temp);
+                    block.set_damage(block.get_damage() * temp);
+                    block.set_damage(block.get_damage() * temp);
+                }
+                engine = new Engine<TurboCharger>(f_ind, head, block);
+                if (dynamic_cast<TurboCharger*>(f_ind)->get_damage() < 0.5 || block.get_damage() < 0.7) {
+                    oil_checker = true;
+                    if (dynamic_cast<TurboCharger*>(f_ind)->get_damage() < 0.1 || block.get_damage() < 0.3) {
+                        std::cout << "\tBroken" << std::endl
+                                  << std::flush;
+                        goto cancel;
+                    }
+                }
+            }
+        }
+        usleep(6E+4 / simulation_speed_scale);
+        system("clear");
+        if (oil_checker) {
+            std::cout << "Oil overheating!!!" << std::endl
+                      << std::endl
+                      << std::flush;
+        }
+
+        float e_torque = engine->get_torque_at_rpm(RPM);
+        float w_torque = e_torque * gearbox->get_coupler().get_friction() * gearbox->get_ratios().get_ratios()[gear] * diff.get_gear_ratio();
+        float w_speed = RPM * gearbox->get_coupler().get_friction()
+                        * (1 / gearbox->get_ratios().get_ratios()[gear])
+                        * (1 / diff.get_gear_ratio())
+                        * (3.f / 25.f * M_PI * static_cast<float>(static_cast<float>(tire.get_width()) * static_cast<float>(tire.get_aspect_ratio()) / 100.f + static_cast<float>(rim.get_diameter()) * 25.4f) / 1000.f);
+        std::cout << "Gear: " << gear - 1 << std::endl
+                  << "Gear ratio: " << gearbox->get_ratios().get_ratios()[gear] << std::endl
+                  << "Diff ratio: " << diff.get_gear_ratio() << std::endl
+                  << "Current RPM: " << RPM << std::endl
+                  << "Engine Torque: " << std::setprecision(2) << std::fixed << e_torque << " Nm" << std::endl
+                  << "Wheel Torque: " << w_torque << " Nm" << std::endl
+                  << "Wheel Speed: " << w_speed << " km/h" << std::endl
+                  << "Damage: " << block.get_damage() << ' ' << dynamic_cast<TurboCharger*>(f_ind)->get_damage() << std::endl
+                  << std::endl
+                  << std::flush;
+        RPM += 100;
+    } while (true);
+cancel:
+    delete engine;
     delete axle;
     delete gearbox;
     return 0;
