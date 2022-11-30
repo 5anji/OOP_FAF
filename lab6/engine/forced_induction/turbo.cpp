@@ -13,7 +13,8 @@ TurboCharger::TurboCharger() {
 }
 
 TurboCharger::TurboCharger(const TurboCharger& copy)
-        : psi_at_rpm(copy.psi_at_rpm) {}
+        : Damage()
+        , psi_at_rpm(copy.psi_at_rpm) {}
 
 TurboCharger::TurboCharger(std::map<int, float> psi)
         : psi_at_rpm(psi) {}

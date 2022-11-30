@@ -8,6 +8,50 @@ Controller::Controller(float scale)
         , simulation_speed_scale(scale)
         , runs(1) {}
 
+Controller::Controller(const Model& model, const View& view, float scale)
+        : model(model)
+        , view(view)
+        , RPM(800)
+        , gear(2)
+        , delta(0.9997f, 1.f)
+        , oil_checker(false)
+        , simulation_speed_scale(scale)
+        , runs(1) {
+}
+
+Rim& Controller::get_rim() { return model.get_rim(); }
+void Controller::set_rim(Rim& copy) { model.set_rim(copy); }
+
+Tire& Controller::get_tire() { return model.get_tire(); }
+void Controller::set_tire(Tire& copy) { model.set_tire(copy); }
+
+LeafSpring& Controller::get_leaf() { return model.get_leaf(); }
+void Controller::set_leaf(LeafSpring& copy) { model.set_leaf(copy); }
+
+Suspension<LeafSpring>* Controller::get_axle() { return model.get_axle(); }
+void Controller::set_axle(Suspension<LeafSpring>* copy) { model.set_axle(copy); }
+
+Clutch& Controller::get_coupler() { return model.get_coupler(); }
+void Controller::set_coupler(Clutch& copy) { model.set_coupler(copy); }
+
+Gearbox<Clutch>* Controller::get_gearbox() { return model.get_gearbox(); }
+void Controller::set_gearbox(Gearbox<Clutch>* copy) { model.set_gearbox(copy); }
+
+Forced_Induction* Controller::get_f_ind() { return model.get_f_ind(); }
+void Controller::set_f_ind(Forced_Induction* copy) { model.set_f_ind(copy); }
+
+EngineHead& Controller::get_head() { return model.get_head(); }
+void Controller::set_head(EngineHead& copy) { model.set_head(copy); }
+
+ShortBlock& Controller::get_block() { return model.get_block(); }
+void Controller::set_block(ShortBlock& copy) { model.set_block(copy); }
+
+Differential& Controller::get_diff() { return model.get_diff(); }
+void Controller::set_diff(Differential& copy) { model.set_diff(copy); }
+
+Engine<TurboCharger>* Controller::get_engine() { return model.get_engine(); }
+void Controller::set_engine(Engine<TurboCharger>* copy) { model.set_engine(copy); }
+
 int Controller::run() {
     view.clear();
 

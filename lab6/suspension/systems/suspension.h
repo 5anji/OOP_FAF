@@ -6,6 +6,7 @@ struct Suspension {
     virtual void set_is_powered(bool) = 0;
     virtual T get_spring_t() = 0;
     virtual bool get_is_powered() = 0;
+    virtual ~Suspension() = default;
 
 protected:
     T spring_t;

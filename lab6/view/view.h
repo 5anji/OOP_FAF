@@ -10,6 +10,6 @@ public:
     void clear();
     void change_gear();
     void check_oil();
-    void display_engine_info(uint8_t, uint8_t, float, float, uint16_t, float, float, float, float, float);
+    void display_engine_info(uint16_t, uint16_t, float, float, uint16_t, float, float, float, float, float, bool = false);
     void check_broken();
 };

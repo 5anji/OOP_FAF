@@ -14,7 +14,8 @@ ShortBlock::ShortBlock() {
 }
 
 ShortBlock::ShortBlock(const ShortBlock& copy)
-        : torque_at_rpm(copy.torque_at_rpm)
+        : Damage()
+        , torque_at_rpm(copy.torque_at_rpm)
         , max_rpm(copy.max_rpm)
         , idle_rpm(copy.idle_rpm) {}
 
@@ -33,3 +34,11 @@ float ShortBlock::get_torque_Nm(uint16_t rpm) {
 
     return integrity * lower->second + (upper->second - lower->second) * float(rpm - lower->first) / fabs(upper->first - lower->first);
 }
+
+void ShortBlock::set(const std::tuple<std::map<int, float>, uint32_t, uint32_t>& that) {
+    torque_at_rpm = std::get<0>(that);
+    max_rpm = std::get<1>(that);
+    idle_rpm = std::get<2>(that);
+}
+
+std::tuple<std::map<int, float>, uint32_t, uint32_t> ShortBlock::get() { return std::tuple<std::map<int, float>, uint32_t, uint32_t>(torque_at_rpm, max_rpm, idle_rpm); }

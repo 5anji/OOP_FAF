@@ -16,4 +16,6 @@ public:
     ShortBlock(const ShortBlock&);
     ShortBlock(std::map<int, float>, uint32_t, uint32_t);
     float get_torque_Nm(uint16_t);
+    void set(const std::tuple<std::map<int, float>, uint32_t, uint32_t>&);
+    std::tuple<std::map<int, float>, uint32_t, uint32_t> get();
 };

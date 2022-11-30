@@ -39,19 +39,25 @@ Model::Model()
 }
 
 Rim& Model::get_rim() { return rim; }
-void Model::set_rim(Rim& copy) { rim = copy; }
+void Model::set_rim(Rim& copy) { rim.set_rim_data(copy.get_diameter(), copy.get_width(), copy.get_ET()); }
 
 Tire& Model::get_tire() { return tire; }
-void Model::set_tire(Tire& copy) { tire = copy; }
+void Model::set_tire(Tire& copy) { tire.set_tire_data(copy.get_width(), copy.get_aspect_ratio(), copy.get_aspect_ratio()); }
 
 LeafSpring& Model::get_leaf() { return leaf; }
-void Model::set_leaf(LeafSpring& copy) { leaf = copy; }
+void Model::set_leaf(LeafSpring& copy) {
+    leaf.set_height(copy.get_height());
+    leaf.set_stifness(copy.get_stifness());
+}
 
 Suspension<LeafSpring>* Model::get_axle() { return axle; }
 void Model::set_axle(Suspension<LeafSpring>* copy) { axle = copy; }
 
 Clutch& Model::get_coupler() { return coupler; }
-void Model::set_coupler(Clutch& copy) { coupler = copy; }
+void Model::set_coupler(Clutch& copy) {
+    coupler.set_friction(copy.get_friction());
+    coupler.set_torque(copy.get_torque());
+}
 
 Gearbox<Clutch>* Model::get_gearbox() { return gearbox; }
 void Model::set_gearbox(Gearbox<Clutch>* copy) { gearbox = copy; }
@@ -60,13 +66,16 @@ Forced_Induction* Model::get_f_ind() { return f_ind; }
 void Model::set_f_ind(Forced_Induction* copy) { f_ind = copy; }
 
 EngineHead& Model::get_head() { return head; }
-void Model::set_head(EngineHead& copy) { head = copy; }
+void Model::set_head(EngineHead& copy) { head.set(copy.get()); }
 
 ShortBlock& Model::get_block() { return block; }
-void Model::set_block(ShortBlock& copy) { block = copy; }
+void Model::set_block(ShortBlock& copy) { block.set(copy.get()); }
 
 Differential& Model::get_diff() { return diff; }
-void Model::set_diff(Differential& copy) { diff = copy; }
+void Model::set_diff(Differential& copy) {
+    diff.set_gear_ratio(copy.get_gear_ratio());
+    diff.set_lock_ratio(copy.get_lock_ratio());
+}
 
 Engine<TurboCharger>* Model::get_engine() { return engine; }
 void Model::set_engine(Engine<TurboCharger>* copy) { engine = copy; }

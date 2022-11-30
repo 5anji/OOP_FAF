@@ -1,7 +1,8 @@
 #include "supercharger.h"
 
 SuperCharger::SuperCharger(const SuperCharger& copy)
-        : ratio(copy.ratio) {}
+        : Damage()
+        , ratio(copy.ratio) {}
 
 SuperCharger::SuperCharger(float ratio)
         : ratio(ratio) {}

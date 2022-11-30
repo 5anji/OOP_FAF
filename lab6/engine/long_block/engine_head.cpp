@@ -19,3 +19,10 @@ float EngineHead::get_added_torque_ratio() {
 float EngineHead::get_max_torque() {
     return max_torque;
 }
+
+void EngineHead::set(const std::pair<float, float>& that) {
+    compression = that.first;
+    max_torque = that.second;
+}
+
+std::pair<float, float> EngineHead::get() { return std::pair<float, float>(compression, max_torque); }
